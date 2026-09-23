@@ -104,10 +104,10 @@ sleep 5
 CERT_DIR="deploy/certbot/etc/live/$DOMAIN"
 if [ ! -f "$CERT_DIR/fullchain.pem" ]; then
   echo "==> Rilascio certificato SSL per $DOMAIN..."
-  $SUDO docker run --rm \
+  $SUDO docker run --rm -it \
     -v "$ROOT_DIR/deploy/certbot/etc:/etc/letsencrypt" \
     -v "$ROOT_DIR/deploy/certbot/www:/var/www/certbot" \
-    certbot/certbot certonly \
+    certbot/certbot certonly --non-interactive \
       --webroot -w /var/www/certbot \
       -d "$DOMAIN" \
       --email "$CERTBOT_EMAIL" \
