@@ -13,6 +13,11 @@ import uploadRoutes from './routes/upload';
 
 const app = express();
 
+// Dietro nginx reverse proxy negli ambienti di produzione
+if (config.nodeEnv === 'production') {
+  app.set('trust proxy', 1);
+}
+
 const uploadsDir = path.join(__dirname, '..', 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });

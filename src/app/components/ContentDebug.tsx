@@ -1,6 +1,7 @@
 "use client";
 
 import { useContent } from "@/lib/useContent";
+import { API_BASE } from "@/lib/api";
 import { useState } from "react";
 
 export default function ContentDebug() {
@@ -45,7 +46,7 @@ export default function ContentDebug() {
             <div>Loading: {loading ? '🔄 Sì' : '✅ No'}</div>
             <div>Error: {error ? `❌ ${error}` : '✅ Nessuno'}</div>
             <div>Contenuti caricati: {keys.length}</div>
-            <div>API URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}</div>
+            <div>API URL: {API_BASE}</div>
           </div>
         </div>
 

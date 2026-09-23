@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  output: "standalone",
   outputFileTracingRoot: __dirname, // Set correct root to avoid warning
   images: {
     remotePatterns: [
@@ -21,7 +22,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/uploads/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/uploads/:path*`,
+        destination: `${process.env.BACKEND_URL || "http://localhost:5000"}/uploads/:path*`,
       },
     ];
   },

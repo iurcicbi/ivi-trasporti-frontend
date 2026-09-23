@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getToken } from "@/lib/api";
+import { getToken, API_BASE } from "@/lib/api";
 import ImageUpload from "../components/ImageUpload";
 import FileUpload from "../components/FileUpload";
 
@@ -336,7 +336,7 @@ export default function AdminGlobalePage() {
   const load = useCallback(async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/contents/list?section=globale`
+        `${API_BASE}/contents/list?section=globale`
       );
       if (!res.ok) throw new Error();
       const list = await res.json();
@@ -389,7 +389,7 @@ export default function AdminGlobalePage() {
       const allKeys = [...contentKeys, ...seoKeys, "seo_global_title", "seo_global_description", "seo_global_og_image"];
       const updates = allKeys.map((key) => ({ key, value: values[key] ?? "" }));
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/contents/bulk`,
+        `${API_BASE}/contents/bulk`,
         {
           method: "PUT",
           headers: {

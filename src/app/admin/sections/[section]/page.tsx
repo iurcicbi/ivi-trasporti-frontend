@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getToken } from "@/lib/api";
+import { getToken, API_BASE } from "@/lib/api";
 import { getGroupsForSection, type SectionGroup, type GroupField } from "@/lib/sectionGroups";
 import ImageUpload from "../../components/ImageUpload";
 
@@ -149,7 +149,7 @@ export default function AdminSectionPage() {
   const load = useCallback(async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/contents/list?section=${section}`
+        `${API_BASE}/contents/list?section=${section}`
       );
       if (!res.ok) throw new Error();
       const list = await res.json();
@@ -184,7 +184,7 @@ export default function AdminSectionPage() {
     try {
       const updates = allKeys.map((key) => ({ key, value: values[key] ?? "" }));
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/contents/bulk`,
+        `${API_BASE}/contents/bulk`,
         {
           method: "PUT",
           headers: {

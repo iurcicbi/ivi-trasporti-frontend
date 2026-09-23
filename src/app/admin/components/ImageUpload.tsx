@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { getToken } from "@/lib/api";
+import { getToken, API_BASE, API_ORIGIN } from "@/lib/api";
 
 interface ImageUploadProps {
   value: string;
@@ -24,7 +24,7 @@ export default function ImageUpload({ value, onChange, label }: ImageUploadProps
       const formData = new FormData();
       formData.append("image", file);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/upload`,
+        `${API_BASE}/upload`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -70,7 +70,7 @@ export default function ImageUpload({ value, onChange, label }: ImageUploadProps
     v && (v.startsWith("/uploads/") || v.startsWith("http"));
 
   const fullUrl = value?.startsWith("/uploads/")
-    ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}${value}`
+    ? `${API_ORIGIN}${value}`
     : value;
 
   return (

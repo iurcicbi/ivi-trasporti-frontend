@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { getToken } from "@/lib/api";
+import { getToken, API_BASE, API_ORIGIN } from "@/lib/api";
 
 interface FileUploadProps {
   value: string;
@@ -29,7 +29,7 @@ export default function FileUpload({
       const formData = new FormData();
       formData.append(apiEndpoint === "pdf" ? "pdf" : "file", file);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/upload/${apiEndpoint}`,
+        `${API_BASE}/upload/${apiEndpoint}`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -55,7 +55,7 @@ export default function FileUpload({
   };
 
   const fullUrl = value?.startsWith("/uploads/")
-    ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}${value}`
+    ? `${API_ORIGIN}${value}`
     : value;
 
   return (

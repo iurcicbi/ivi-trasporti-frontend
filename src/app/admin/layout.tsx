@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { getToken } from "@/lib/api";
+import { getToken, API_ORIGIN } from "@/lib/api";
 import { useContent } from "@/lib/useContent";
 
 const sidebarItems = [
@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const logoSrc = get("logo_img_src", "");
   const logoUrl = logoSrc?.startsWith("/uploads/")
-    ? `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}${logoSrc}`
+    ? `${API_ORIGIN}${logoSrc}`
     : logoSrc;
 
   useEffect(() => {
