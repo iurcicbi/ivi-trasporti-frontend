@@ -4,7 +4,7 @@
 const API_BASE = 'http://localhost:5000/api';
 
 async function testContentLoading() {
-  console.log('🔍 Test del sistema di caricamento contenuti...\n');
+  console.log('Test del sistema di caricamento contenuti...\n');
 
   try {
     // Test 1: Verifica connessione al server
@@ -12,9 +12,9 @@ async function testContentLoading() {
     const healthRes = await fetch(`${API_BASE}/health`);
     if (healthRes.ok) {
       const health = await healthRes.json();
-      console.log('✅ Server attivo:', health.status);
+      console.log('Server attivo:', health.status);
     } else {
-      console.log('❌ Server non raggiungibile');
+      console.log('Server non raggiungibile');
       return;
     }
 
@@ -24,25 +24,25 @@ async function testContentLoading() {
     if (globalRes.ok) {
       const globalContent = await globalRes.json();
       const keys = Object.keys(globalContent);
-      console.log(`📦 Contenuti globali caricati: ${keys.length} elementi`);
+      console.log(`Contenuti globali caricati: ${keys.length} elementi`);
       
       if (keys.length === 0) {
-        console.log('⚠️  Database vuoto - verifica che sia popolato tramite admin');
+        console.log('Database vuoto - verifica che sia popolato tramite admin');
       } else {
-        console.log('📋 Chiavi disponibili:', keys.slice(0, 5).join(', ') + (keys.length > 5 ? '...' : ''));
+        console.log('Chiavi disponibili:', keys.slice(0, 5).join(', ') + (keys.length > 5 ? '...' : ''));
         
         // Verifica chiavi importanti
         const importantKeys = ['logo_text', 'logo_img_src', 'phone_number', 'footer_copyright'];
         const missingKeys = importantKeys.filter(key => !(key in globalContent));
         
         if (missingKeys.length === 0) {
-          console.log('✅ Tutte le chiavi importanti sono presenti');
+          console.log('Tutte le chiavi importanti sono presenti');
         } else {
-          console.log('⚠️  Chiavi mancanti:', missingKeys.join(', '));
+          console.log('Chiavi mancanti:', missingKeys.join(', '));
         }
       }
     } else {
-      console.log('❌ Errore nel caricamento contenuti globali');
+      console.log('Errore nel caricamento contenuti globali');
     }
 
     // Test 3: Test fallback values
@@ -72,15 +72,15 @@ async function testContentLoading() {
       console.log(`  ${test.key}: "${result}" ${isFromDB ? '(da DB)' : '(fallback)'}`);
     });
 
-    console.log('\n✅ Test completato con successo!');
-    console.log('\n📝 Istruzioni:');
+    console.log('\nTest completato con successo!');
+    console.log('\nIstruzioni:');
     console.log('1. Se vedi contenuti "da DB", il sistema funziona perfettamente');
     console.log('2. Se vedi solo "(fallback)", vai su /admin/globale per configurare');
     console.log('3. Per testare il caricamento logo, carica un\'immagine nell\'admin');
 
   } catch (error) {
-    console.log('❌ Errore durante il test:', error.message);
-    console.log('\n🔧 Possibili soluzioni:');
+    console.log('Errore durante il test:', error.message);
+    console.log('\nPossibili soluzioni:');
     console.log('1. Verifica che il server sia avviato: npm run dev');
     console.log('2. Controlla che MongoDB sia in esecuzione');
     console.log('3. Verifica la configurazione in server/.env');

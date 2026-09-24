@@ -5,7 +5,7 @@ const API_BASE = 'http://localhost:5000/api';
 const FRONTEND_BASE = 'http://localhost:3000';
 
 async function testImageLoading() {
-  console.log('🖼️  Test caricamento immagini...\n');
+  console.log('Test caricamento immagini...\n');
 
   try {
     // 1. Ottieni contenuti per verificare immagini configurate
@@ -17,12 +17,12 @@ async function testImageLoading() {
       .map(([key, value]) => ({ key, value: String(value) }));
 
     if (imageKeys.length === 0) {
-      console.log('❌ Nessuna immagine configurata nei contenuti');
-      console.log('💡 Vai su /admin/globale per caricare un logo');
+      console.log('Nessuna immagine configurata nei contenuti');
+      console.log('Vai su /admin/globale per caricare un logo');
       return;
     }
 
-    console.log(`✅ Trovate ${imageKeys.length} immagini:`);
+    console.log(`Trovate ${imageKeys.length} immagini:`);
     imageKeys.forEach(({ key, value }) => {
       console.log(`  ${key}: ${value}`);
     });
@@ -34,9 +34,9 @@ async function testImageLoading() {
         const directUrl = `${API_BASE}${value}`;
         try {
           const response = await fetch(directUrl, { method: 'HEAD' });
-          console.log(`  ${key}: ${response.ok ? '✅ OK' : '❌ ERRORE'} (${response.status}) - ${directUrl}`);
+          console.log(`  ${key}: ${response.ok ? 'OK' : 'ERRORE'} (${response.status}) - ${directUrl}`);
         } catch (err) {
-          console.log(`  ${key}: ❌ ERRORE - ${err.message}`);
+          console.log(`  ${key}: ERRORE - ${err.message}`);
         }
       }
     }
@@ -48,21 +48,21 @@ async function testImageLoading() {
         const rewriteUrl = `${FRONTEND_BASE}${value}`;
         try {
           const response = await fetch(rewriteUrl, { method: 'HEAD' });
-          console.log(`  ${key}: ${response.ok ? '✅ OK' : '❌ ERRORE'} (${response.status}) - ${rewriteUrl}`);
+          console.log(`  ${key}: ${response.ok ? 'OK' : 'ERRORE'} (${response.status}) - ${rewriteUrl}`);
         } catch (err) {
-          console.log(`  ${key}: ❌ ERRORE - ${err.message}`);
+          console.log(`  ${key}: ERRORE - ${err.message}`);
         }
       }
     }
 
-    console.log('\n✅ Test completato!');
-    console.log('\n📝 Se vedi errori:');
+    console.log('\nTest completato!');
+    console.log('\nSe vedi errori:');
     console.log('1. Verifica che entrambi i server siano avviati: npm run dev');
     console.log('2. Controlla il browser: apri Network tab e ricarica la pagina');
-    console.log('3. Usa il debug component: clicca "🔍 DEBUG" sulla pagina');
+    console.log('3. Usa il debug component: clicca "DEBUG" sulla pagina');
 
   } catch (error) {
-    console.log('❌ Errore durante il test:', error.message);
+    console.log('Errore durante il test:', error.message);
   }
 }
 

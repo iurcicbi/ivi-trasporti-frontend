@@ -4,7 +4,7 @@
 const API_BASE = 'http://localhost:5000/api';
 
 async function initAdminAndContent() {
-  console.log('🚀 Inizializzazione admin e contenuti...\n');
+  console.log('Inizializzazione admin e contenuti...\n');
 
   try {
     // Test connessione server
@@ -13,7 +13,7 @@ async function initAdminAndContent() {
     if (!healthRes.ok) {
       throw new Error('Server non raggiungibile. Assicurati che sia avviato con: npm run dev');
     }
-    console.log('✅ Server connesso');
+    console.log('Server connesso');
 
     // Crea admin user se non esiste
     console.log('\n2. Creazione utente admin...');
@@ -30,17 +30,17 @@ async function initAdminAndContent() {
       });
       
       if (registerRes.ok) {
-        console.log('✅ Admin user creato: admin@ivitrasporti.it / admin123');
+        console.log('Admin user creato: admin@ivitrasporti.it / admin123');
       } else {
         const errorData = await registerRes.json().catch(() => ({}));
         if (registerRes.status === 400 && errorData.message?.includes('esiste')) {
-          console.log('ℹ️  Admin user già esistente');
+          console.log('Admin user già esistente');
         } else {
-          console.log('⚠️  Errore creazione admin:', errorData.message || 'Sconosciuto');
+          console.log('Errore creazione admin:', errorData.message || 'Sconosciuto');
         }
       }
     } catch (err) {
-      console.log('⚠️  Errore nella creazione admin:', err.message);
+      console.log('Errore nella creazione admin:', err.message);
     }
 
     // Login admin
@@ -60,7 +60,7 @@ async function initAdminAndContent() {
     }
 
     const { token } = await loginRes.json();
-    console.log('✅ Login effettuato con successo');
+    console.log('Login effettuato con successo');
 
     // Inizializza contenuti di default
     console.log('\n4. Inizializzazione contenuti di default...');
@@ -77,7 +77,7 @@ async function initAdminAndContent() {
     }
 
     const initData = await initRes.json();
-    console.log(`✅ Contenuti inizializzati: ${initData.created} creati, ${initData.updated} aggiornati`);
+    console.log(`Contenuti inizializzati: ${initData.created} creati, ${initData.updated} aggiornati`);
 
     // Verifica caricamento contenuti
     console.log('\n5. Verifica contenuti caricati...');
@@ -85,10 +85,10 @@ async function initAdminAndContent() {
     const content = await contentRes.json();
     const keys = Object.keys(content);
     
-    console.log(`✅ ${keys.length} contenuti globali disponibili`);
+    console.log(`${keys.length} contenuti globali disponibili`);
     
     // Mostra alcuni contenuti chiave
-    console.log('\n📋 Contenuti principali:');
+    console.log('\nContenuti principali:');
     const mainKeys = ['logo_text', 'phone_number', 'footer_copyright'];
     mainKeys.forEach(key => {
       if (content[key]) {
@@ -96,8 +96,8 @@ async function initAdminAndContent() {
       }
     });
 
-    console.log('\n🎉 Inizializzazione completata con successo!');
-    console.log('\n📝 Prossimi passi:');
+    console.log('\nInizializzazione completata con successo!');
+    console.log('\nProssimi passi:');
     console.log('1. Vai su http://localhost:3000 per vedere il sito');
     console.log('2. Login admin: http://localhost:3000/admin/login');
     console.log('   Email: admin@ivitrasporti.it');
@@ -106,8 +106,8 @@ async function initAdminAndContent() {
     console.log('4. Carica il logo e personalizza i contenuti');
 
   } catch (error) {
-    console.log('\n❌ Errore durante l\'inizializzazione:', error.message);
-    console.log('\n🔧 Possibili soluzioni:');
+    console.log('\nErrore durante l\'inizializzazione:', error.message);
+    console.log('\nPossibili soluzioni:');
     console.log('1. Assicurati che il server sia avviato: npm run dev');
     console.log('2. Controlla che MongoDB sia in esecuzione');
     console.log('3. Verifica la configurazione in server/.env');

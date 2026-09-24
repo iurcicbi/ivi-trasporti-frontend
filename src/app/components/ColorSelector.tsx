@@ -5,7 +5,6 @@ import { useState } from "react";
 type ColorPalette = {
   name: string;
   description: string;
-  emoji: string;
   primary: string;
   secondary: string;
   tertiary: string;
@@ -16,7 +15,6 @@ const palettes: ColorPalette[] = [
   {
     name: "Energica",
     description: "Blu energico + Arancione dinamico",
-    emoji: "⚡",
     primary: "#1976d2",
     secondary: "#ff8f00", 
     tertiary: "#00acc1",
@@ -25,7 +23,6 @@ const palettes: ColorPalette[] = [
   {
     name: "Professionale",
     description: "Blu navy + Verde corporate", 
-    emoji: "💼",
     primary: "#0d47a1",
     secondary: "#388e3c",
     tertiary: "#7b1fa2",
@@ -34,7 +31,6 @@ const palettes: ColorPalette[] = [
   {
     name: "Moderna",
     description: "Indigo + Teal + Rosa accent",
-    emoji: "🚀", 
     primary: "#3f51b5",
     secondary: "#009688",
     tertiary: "#e91e63",
@@ -53,7 +49,7 @@ export default function ColorSelector() {
         className="fixed bottom-36 right-4 bg-purple-600 text-white px-3 py-1 rounded text-xs z-50 opacity-50 hover:opacity-100"
         title="Scegli Palette"
       >
-        🎭 PALETTE
+         PALETTE
       </button>
     );
   }
@@ -71,18 +67,18 @@ export default function ColorSelector() {
     // Salva la scelta nel localStorage
     localStorage.setItem('selectedPalette', JSON.stringify(palette));
     
-    alert(`✨ Palette "${palette.name}" applicata! Ricarica la pagina per vedere tutti i cambiamenti.`);
+    alert(`Palette "${palette.name}" applicata! Ricarica la pagina per vedere tutti i cambiamenti.`);
   };
 
   return (
     <div className="fixed inset-4 bg-black bg-opacity-90 text-white p-4 rounded-lg overflow-auto z-50">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">🎭 Scegli la Palette Colori</h2>
+        <h2 className="text-lg font-bold">Scegli la Palette Colori</h2>
         <button
           onClick={() => setShowSelector(false)}
           className="bg-red-500 px-2 py-1 rounded text-xs"
         >
-          ✕ Chiudi
+           Chiudi
         </button>
       </div>
 
@@ -98,7 +94,6 @@ export default function ColorSelector() {
             onClick={() => setSelectedPalette(palette)}
           >
             <div className="text-center mb-3">
-              <span className="text-2xl">{palette.emoji}</span>
               <h3 className="font-bold text-lg">{palette.name}</h3>
               <p className="text-sm text-gray-300">{palette.description}</p>
             </div>
@@ -122,9 +117,9 @@ export default function ColorSelector() {
             </div>
             
             <div className="text-xs text-gray-400 text-center space-y-1">
-              <div>🔵 {palette.primary}</div>
-              <div>🟠 {palette.secondary}</div>
-              <div>🔷 {palette.tertiary}</div>
+              <div>{palette.primary}</div>
+              <div>{palette.secondary}</div>
+              <div>{palette.tertiary}</div>
             </div>
             
             <button
@@ -134,14 +129,14 @@ export default function ColorSelector() {
               }}
               className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm font-medium"
             >
-              ✨ Applica {palette.name}
+               Applica {palette.name}
             </button>
           </div>
         ))}
       </div>
 
       <div className="bg-gray-800 p-4 rounded-lg">
-        <h3 className="font-bold mb-2">📝 Palette Attuale: {selectedPalette.emoji} {selectedPalette.name}</h3>
+        <h3 className="font-bold mb-2">Palette Attuale: {selectedPalette.name}</h3>
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div>
             <strong>Primario:</strong> {selectedPalette.primary}
@@ -159,7 +154,7 @@ export default function ColorSelector() {
       </div>
 
       <div className="mt-4 text-center text-sm text-gray-400">
-        💡 Scegli la palette che meglio rappresenta l'energia della tua azienda!
+         Scegli la palette che meglio rappresenta l'energia della tua azienda!
       </div>
     </div>
   );

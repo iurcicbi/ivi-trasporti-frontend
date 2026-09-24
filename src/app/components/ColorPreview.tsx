@@ -12,7 +12,7 @@ export default function ColorPreview() {
         className="fixed bottom-20 right-4 bg-primary text-on-primary px-3 py-1 rounded text-xs z-50 opacity-50 hover:opacity-100"
         title="Anteprima Colori"
       >
-        🎨 COLORI
+         COLORI
       </button>
     );
   }
@@ -31,12 +31,12 @@ export default function ColorPreview() {
   return (
     <div className="fixed inset-4 bg-black bg-opacity-90 text-white p-4 rounded-lg overflow-auto z-50">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">🎨 Anteprima Nuova Palette Colori</h2>
+        <h2 className="text-lg font-bold">Anteprima Nuova Palette Colori</h2>
         <button
           onClick={() => setShowPreview(false)}
           className="bg-red-500 px-2 py-1 rounded text-xs"
         >
-          ✕ Chiudi
+           Chiudi
         </button>
       </div>
 
@@ -51,18 +51,18 @@ export default function ColorPreview() {
       </div>
 
       <div className="bg-gray-800 p-4 rounded-lg mb-4">
-        <h3 className="font-bold mb-2">🌈 Nuova Palette Energica</h3>
+        <h3 className="font-bold mb-2">Nuova Palette Energica</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <strong>🔵 Primario:</strong> #1976d2
+            <strong>Primario:</strong> #1976d2
             <div className="text-xs text-gray-400">Blu Material energico e professionale</div>
           </div>
           <div>
-            <strong>🟠 Secondario:</strong> #ff8f00  
+            <strong>Secondario:</strong> #ff8f00  
             <div className="text-xs text-gray-400">Arancione vivace e dinamico</div>
           </div>
           <div>
-            <strong>🔷 Terziario:</strong> #00acc1
+            <strong>Terziario:</strong> #00acc1
             <div className="text-xs text-gray-400">Teal moderno e fresco</div>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function ColorPreview() {
 
       {/* Esempi di componenti con i nuovi colori */}
       <div className="bg-gray-800 p-4 rounded-lg">
-        <h3 className="font-bold mb-4">🧩 Esempi Componenti</h3>
+        <h3 className="font-bold mb-4">Esempi Componenti</h3>
         
         {/* Header Example */}
         <div className="bg-surface text-on-surface p-3 rounded mb-3 border border-outline-variant">
@@ -85,13 +85,13 @@ export default function ColorPreview() {
         {/* Button Examples */}
         <div className="flex gap-2 mb-3 flex-wrap">
           <button className="bg-primary text-on-primary px-4 py-2 rounded font-medium">
-            🔵 Blu Primario
+             Blu Primario
           </button>
           <button className="bg-secondary text-on-secondary px-4 py-2 rounded font-medium">
-            🟠 Arancione Vivace
+             Arancione Vivace
           </button>
           <button className="bg-tertiary text-on-tertiary px-4 py-2 rounded font-medium">
-            🔷 Teal Fresco
+             Teal Fresco
           </button>
           <button className="bg-primary-container text-on-primary-container px-4 py-2 rounded font-medium">
             Azzurro Container
@@ -100,23 +100,23 @@ export default function ColorPreview() {
 
         {/* Card Example */}
         <div className="bg-surface-container text-on-surface p-4 rounded-lg border border-outline-variant dynamic-shadow">
-          <div className="text-primary font-bold mb-2">🚚 Servizio Trasporti Energico</div>
+          <div className="text-primary font-bold mb-2">Servizio Trasporti Energico</div>
           <div className="text-on-surface-variant text-sm mb-3">
             La nuova palette trasmette energia, dinamismo e professionalità. Perfetta per un'azienda di trasporti moderna!
           </div>
           <div className="flex gap-2">
             <span className="bg-secondary-container text-on-secondary-container px-2 py-1 rounded text-xs">
-              🟠 Dinamico
+               Dinamico
             </span>
             <span className="bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded text-xs">
-              🔷 Moderno
+               Moderno
             </span>
           </div>
         </div>
       </div>
 
       <div className="mt-4 text-center text-sm text-gray-400">
-        🎨✨ Palette energica e moderna applicata! Ricarica per vedere i cambiamenti vivaci.
+         Palette energica e moderna applicata! Ricarica per vedere i cambiamenti vivaci.
       </div>
     </div>
   );
