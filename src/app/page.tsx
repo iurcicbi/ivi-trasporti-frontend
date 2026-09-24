@@ -5,11 +5,37 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import MobileBottomNav from "@/app/components/MobileBottomNav";
 import { useContent } from "@/lib/useContent";
+import { sendContactMail } from "@/lib/api";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
   const { get } = useContent("home");
   const g = useContent("globale");
+
+  const [formState, setFormState] = useState({
+    company: "",
+    email: "",
+    pickup: "",
+    destination: "",
+    notes: "",
+  });
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [formError, setFormError] = useState("");
+
+  const handleQuoteSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (formStatus === "sending") return;
+    setFormStatus("sending");
+    setFormError("");
+    try {
+      await sendContactMail({ ...formState });
+      setFormStatus("success");
+      setFormState({ company: "", email: "", pickup: "", destination: "", notes: "" });
+    } catch (err) {
+      setFormStatus("error");
+      setFormError(err instanceof Error ? err.message : "Errore nell'invio");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -380,7 +406,10 @@ export default function Home() {
               <p className="font-body-sm md:font-body-lg text-body-sm md:text-body-lg text-white/70 mb-lg md:mb-xl">
                 {get("quote_subtitle", "Richiedi un preventivo gratuito e personalizzato. Il nostro team analizzerà le tue esigenze e ti proporrà la soluzione di trasporto più adatta.")}
               </p>
-              <form className="bg-white/10 backdrop-blur-md p-md md:p-lg rounded-2xl border border-white/20 text-left grid grid-cols-1 md:grid-cols-2 gap-md shadow-2xl">
+              <form
+                className="bg-white/10 backdrop-blur-md p-md md:p-lg rounded-2xl border border-white/20 text-left grid grid-cols-1 md:grid-cols-2 gap-md shadow-2xl"
+                onSubmit={handleQuoteSubmit}
+              >
                 <div className="space-y-xs">
                   <label className="font-label-xs md:font-label-sm text-label-xs md:text-label-sm text-white/70 uppercase">
                     {get("quote_field_company", "Ragione Sociale")}
@@ -389,6 +418,9 @@ export default function Home() {
                     className="w-full bg-white/5 border-white/10 rounded-xl px-sm md:px-md py-xs md:py-sm text-white placeholder:text-white/30 focus:border-secondary-container focus:ring-0 transition-colors text-body-sm md:text-body-md"
                     placeholder={get("quote_field_company_placeholder", "Nome Azienda S.r.l.")}
                     type="text"
+                    required
+                    value={formState.company}
+                    onChange={(e) => setFormState((s) => ({ ...s, company: e.target.value }))}
                   />
                 </div>
                 <div className="space-y-xs">
@@ -399,6 +431,9 @@ export default function Home() {
                     className="w-full bg-white/5 border-white/10 rounded-xl px-sm md:px-md py-xs md:py-sm text-white placeholder:text-white/30 focus:border-secondary-container focus:ring-0 transition-colors text-body-sm md:text-body-md"
                     placeholder={get("quote_field_email_placeholder", "esempio@email.it")}
                     type="email"
+                    required
+                    value={formState.email}
+                    onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
                   />
                 </div>
                 <div className="space-y-xs">
@@ -409,6 +444,8 @@ export default function Home() {
                     className="w-full bg-white/5 border-white/10 rounded-xl px-sm md:px-md py-xs md:py-sm text-white placeholder:text-white/30 focus:border-secondary-container focus:ring-0 transition-colors text-body-sm md:text-body-md"
                     placeholder={get("quote_field_pickup_placeholder", "Città, Prov. o CAP")}
                     type="text"
+                    value={formState.pickup}
+                    onChange={(e) => setFormState((s) => ({ ...s, pickup: e.target.value }))}
                   />
                 </div>
                 <div className="space-y-xs">
@@ -419,6 +456,8 @@ export default function Home() {
                     className="w-full bg-white/5 border-white/10 rounded-xl px-sm md:px-md py-xs md:py-sm text-white placeholder:text-white/30 focus:border-secondary-container focus:ring-0 transition-colors text-body-sm md:text-body-md"
                     placeholder={get("quote_field_destination_placeholder", "Città, Prov. o CAP")}
                     type="text"
+                    value={formState.destination}
+                    onChange={(e) => setFormState((s) => ({ ...s, destination: e.target.value }))}
                   />
                 </div>
                 <div className="md:col-span-2 space-y-xs">
@@ -429,14 +468,29 @@ export default function Home() {
                     className="w-full bg-white/5 border-white/10 rounded-xl px-sm md:px-md py-xs md:py-sm text-white placeholder:text-white/30 focus:border-secondary-container focus:ring-0 transition-colors text-body-sm md:text-body-md"
                     placeholder={get("quote_field_notes_placeholder", "Peso, dimensioni, numero bancali e tipologia merce...")}
                     rows={3}
+                    value={formState.notes}
+                    onChange={(e) => setFormState((s) => ({ ...s, notes: e.target.value }))}
                   />
                 </div>
                 <div className="md:col-span-2 pt-xs md:pt-sm">
+                  {formStatus === "success" && (
+                    <p className="mb-sm md:mb-md bg-white/10 border border-white/20 rounded-xl px-sm md:px-md py-xs md:py-sm text-center text-white text-body-sm md:text-body-md">
+                      Richiesta inviata con successo. Ti ricontatteremo al più presto.
+                    </p>
+                  )}
+                  {formStatus === "error" && (
+                    <p className="mb-sm md:mb-md bg-red-500/90 border border-red-300 rounded-xl px-sm md:px-md py-xs md:py-sm text-center text-white text-body-sm md:text-body-md">
+                      {formError}
+                    </p>
+                  )}
                   <button
-                    className="w-full bg-secondary-container text-on-secondary-container font-label-md md:font-headline-md text-label-md md:text-headline-md font-bold py-sm md:py-md rounded-xl hover:opacity-90 transition-all active:scale-[0.98] hover:-translate-y-0.5 shadow-lg"
+                    className="w-full bg-secondary-container text-on-secondary-container font-label-md md:font-headline-md text-label-md md:text-headline-md font-bold py-sm md:py-md rounded-xl hover:opacity-90 transition-all active:scale-[0.98] hover:-translate-y-0.5 shadow-lg disabled:opacity-60 disabled:hover:translate-y-0"
                     type="submit"
+                    disabled={formStatus === "sending"}
                   >
-                    {get("quote_submit_label", "Invia Richiesta Preventivo")}
+                    {formStatus === "sending"
+                      ? "Invio in corso..."
+                      : get("quote_submit_label", "Invia Richiesta Preventivo")}
                   </button>
                 </div>
               </form>

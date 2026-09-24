@@ -1,12 +1,52 @@
 "use client";
 
+import { useState } from "react";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import MobileBottomNav from "@/app/components/MobileBottomNav";
 import { useContent } from "@/lib/useContent";
+import { sendContactMail } from "@/lib/api";
 
 export default function ContattiPage() {
   const { get } = useContent("contatti");
+
+  const [formState, setFormState] = useState({
+    company: "",
+    phone: "",
+    email: "",
+    service: "",
+    details: "",
+    privacy: false,
+  });
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [formError, setFormError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (formStatus === "sending") return;
+    if (!formState.privacy) {
+      setFormStatus("error");
+      setFormError("Devi accettare la Privacy Policy per inviare la richiesta");
+      return;
+    }
+    setFormStatus("sending");
+    setFormError("");
+    try {
+      await sendContactMail({ ...formState });
+      setFormStatus("success");
+      setFormState({
+        company: "",
+        phone: "",
+        email: "",
+        service: "",
+        details: "",
+        privacy: false,
+      });
+    } catch (err) {
+      setFormStatus("error");
+      setFormError(err instanceof Error ? err.message : "Errore nell'invio");
+    }
+  };
 
   return (
     <>
@@ -53,7 +93,7 @@ export default function ContattiPage() {
               <p className="text-on-surface-variant font-body-sm md:font-body-md text-body-sm md:text-body-md mb-xs md:mb-lg">
                 {get("form_subtitle", "Compila il modulo per ricevere un preventivo personalizzato in base alle tue esigenze di trasporto.")}
               </p>
-              <form className="space-y-xs md:space-y-md">
+              <form className="space-y-xs md:space-y-md" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-xs md:gap-md">
                   <div className="space-y-base">
                     <label className="text-label-sm md:text-label-sm font-label-sm text-outline">
@@ -63,6 +103,9 @@ export default function ContattiPage() {
                       className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md"
                       placeholder={get("form_field_company_placeholder", "Mario Rossi S.r.l.")}
                       type="text"
+                      required
+                      value={formState.company}
+                      onChange={(e) => setFormState((s) => ({ ...s, company: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-base">
@@ -73,6 +116,8 @@ export default function ContattiPage() {
                       className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md"
                       placeholder={get("form_field_phone_placeholder", "+39 0521 123456")}
                       type="tel"
+                      value={formState.phone}
+                      onChange={(e) => setFormState((s) => ({ ...s, phone: e.target.value }))}
                     />
                   </div>
                 </div>
@@ -84,13 +129,20 @@ export default function ContattiPage() {
                       className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md"
                       placeholder={get("form_field_email_placeholder", "mario@azienda.it")}
                       type="email"
+                      required
+                      value={formState.email}
+                      onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
                     />
                 </div>
                 <div className="space-y-base">
                   <label className="text-label-sm md:text-label-sm font-label-sm text-outline">
                     {get("form_field_service", "TIPOLOGIA SERVIZIO")}
                   </label>
-                  <select className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md">
+                  <select
+                    className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md"
+                    value={formState.service}
+                    onChange={(e) => setFormState((s) => ({ ...s, service: e.target.value }))}
+                  >
                     {[
                       get("form_option1", "Trasporto Nazionale (Italia)"),
                       get("form_option2", "Trasporto Internazionale (UE)"),
@@ -109,6 +161,8 @@ export default function ContattiPage() {
                     className="w-full bg-surface border border-outline-variant focus:border-primary rounded-lg p-xs md:p-sm outline-none transition-colors text-body-sm md:text-body-md"
                     placeholder={get("form_field_details_placeholder", "Indica tratta, tipologia merce e urgenza...")}
                     rows={2}
+                    value={formState.details}
+                    onChange={(e) => setFormState((s) => ({ ...s, details: e.target.value }))}
                   />
                 </div>
                 <div className="flex items-center gap-xs text-label-sm md:text-label-sm text-outline">
@@ -116,13 +170,30 @@ export default function ContattiPage() {
                     className="rounded border-outline-variant text-primary focus:ring-primary"
                     id="privacy"
                     type="checkbox"
+                    checked={formState.privacy}
+                    onChange={(e) => setFormState((s) => ({ ...s, privacy: e.target.checked }))}
                   />
                   <label htmlFor="privacy">
                     {get("form_privacy_label", "Accetto il trattamento dei dati personali secondo la Privacy Policy.")}
                   </label>
                 </div>
-                <button className="w-full bg-primary text-on-primary py-sm md:py-md rounded-xl font-label-md md:font-headline-md text-label-md md:text-headline-md hover:bg-primary-container transition-all active:scale-[0.98]">
-                  {get("form_submit_label", "Invia Richiesta")}
+                {formStatus === "success" && (
+                  <p className="bg-secondary-container/20 border border-secondary-container rounded-lg px-sm py-sm text-center text-body-sm md:text-body-md">
+                    Richiesta inviata con successo. Ti ricontatteremo al più presto.
+                  </p>
+                )}
+                {formStatus === "error" && (
+                  <p className="bg-red-100 border border-red-300 text-red-700 rounded-lg px-sm py-sm text-center text-body-sm md:text-body-md">
+                    {formError}
+                  </p>
+                )}
+                <button
+                  className="w-full bg-primary text-on-primary py-sm md:py-md rounded-xl font-label-md md:font-headline-md text-label-md md:text-headline-md hover:bg-primary-container transition-all active:scale-[0.98] disabled:opacity-60"
+                  disabled={formStatus === "sending"}
+                >
+                  {formStatus === "sending"
+                    ? "Invio in corso..."
+                    : get("form_submit_label", "Invia Richiesta")}
                 </button>
               </form>
             </div>

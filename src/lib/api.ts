@@ -41,6 +41,29 @@ export async function saveContents(updates: { key: string; value: any }[]): Prom
   if (!res.ok) throw new Error('Salvataggio fallito');
 }
 
+export interface ContactPayload {
+  company?: string;
+  name?: string;
+  email: string;
+  phone?: string;
+  pickup?: string;
+  destination?: string;
+  service?: string;
+  notes?: string;
+  details?: string;
+  privacy?: boolean;
+}
+
+export async function sendContactMail(payload: ContactPayload): Promise<void> {
+  const res = await fetch(`${API_BASE}/contact/send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Errore nell'invio dell'email");
+}
+
 export const SECTIONS = [
   { id: 'globale', label: 'Globale (Header, Footer, Logo, Contatti)' },
   { id: 'home', label: 'Home Page' },

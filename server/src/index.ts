@@ -10,6 +10,7 @@ import connectDB from './config/db';
 import authRoutes from './routes/auth';
 import contentRoutes from './routes/content';
 import uploadRoutes from './routes/upload';
+import contactRoutes from './routes/contact';
 
 const app = express();
 
@@ -84,6 +85,7 @@ app.use('/uploads', express.static(uploadsDir, {
 app.use('/api/auth', authRoutes);
 app.use('/api/contents', contentRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
